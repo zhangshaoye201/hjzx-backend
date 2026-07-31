@@ -1,0 +1,31 @@
+server:
+  port: 9527 # 生产环境常用80端口
+  servlet: 
+    context-path: /
+  #ssl:
+    #key-store: classpath:server.keystore
+    #key-store-type: JKS
+    #key-alias: tomcat
+    #key-store-password: 123456  
+    #enabled: true
+
+spring:
+  # 数据库配置（临时名称，可自行修改）
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hjzxdb?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai
+    username: root
+    password: NrxHuiTu@@
+
+# JPA 配置
+  jpa:
+    hibernate:
+      ddl-auto: update # 开发环境：自动更新表结构（生产环境建议改为 none）
+    show-sql: true # 打印SQL（开发环境）
+    properties:
+      hibernate:
+        format_sql: true # 格式化SQL
+        dialect: org.hibernate.dialect.MySQL8Dialect # MySQL 方言（根据版本调整）
+    open-in-view: false # 关闭 Open Session In View（避免性能问题）
+password:
+  salt: Jk9s@2026PwdSalt#Xt
