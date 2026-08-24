@@ -39,9 +39,10 @@ public class UserController {
     @PostMapping("/updatePwd")
     public Map<String, Object> updatePassword(@RequestBody Map<String, String> param) {
         String userId = param.get("userId");
+        String type = param.get("type");
         String oldPassword = param.get("oldPassword");
         String newPassword = param.get("newPassword");
-        return userService.updatePwd(userId, oldPassword, newPassword);
+        return userService.updatePwd(userId, type, oldPassword, newPassword);
     }
     
     @GetMapping("/list")
@@ -59,7 +60,7 @@ public class UserController {
         try {
         	userService.save(userList);
             result.put("code", 200);
-            result.put("msg", "保存成功，数据已同步至数据库");
+            result.put("msg", "保存成功");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
         	result.put("code", 500);

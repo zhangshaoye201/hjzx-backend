@@ -28,7 +28,8 @@ import utils.PoiTlWordUtil;
 
 @RestController
 @RequestMapping("/api/task")
-@CrossOrigin // 允许跨域
+//@CrossOrigin // 允许跨域
+@CrossOrigin(exposedHeaders = {"Content-Disposition"})
 public class TaskController {
 
     @Autowired
@@ -41,10 +42,7 @@ public class TaskController {
     
     /**
      * 条件查询任务列表
-     * @param taskName  任务名称（模糊查询）
-     * @param unitNo    单位内编号
-     * @param status    状态
-     * @param createBy  创建人
+     * @param query  TaskQueryDTO
      * @return 任务列表
      */
     @GetMapping("/list")
@@ -73,7 +71,7 @@ public class TaskController {
         try {
             taskService.save(taskList);
             result.put("code", 200);
-            result.put("msg", "保存成功，数据已同步至数据库");
+            result.put("msg", "保存成功");
             return new ResponseEntity<>(result, HttpStatus.OK);
         } catch (Exception e) {
         	result.put("code", 500);
@@ -121,14 +119,14 @@ public class TaskController {
      * @return HttpServletResponse
      */
     @GetMapping("/export")
-    public void exportSingleTask(@RequestParam String taskId, @RequestParam String tags,HttpServletResponse response) {
+    public void exportSingleTask(@RequestParam String taskId, @RequestParam String docName, @RequestParam String tags,HttpServletResponse response) {
     try {
     	Task task = taskService.findTaskById(taskId);
         // 3. 调用 poi-tl 工具下载Word
         PoiTlWordUtil.downloadWord(
         		taskService.initFileUrl(task.getCategory()),  // 模板路径
                 taskService.initDataMap(task, tags),
-                "任务报告_" + taskId,   // 下载文件名
+                docName,   // 下载文件名
                 response
         );
     } catch (Exception e) {

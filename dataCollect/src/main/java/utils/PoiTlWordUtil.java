@@ -18,7 +18,7 @@ public class PoiTlWordUtil {
 
     public static void downloadWord(String templatePath,
                                     Map<String, Object> data,
-                                    String fileName,
+                                    String docName,
                                     HttpServletResponse response) throws IOException {
         // 1. Spring 读取 classpath(resources) 资源，兼容 jar 包
         ClassPathResource resource = new ClassPathResource(templatePath);
@@ -29,7 +29,7 @@ public class PoiTlWordUtil {
 
         // 2. 设置下载响应头
         response.setContentType("application/vnd.openxmlformats-officedocument.wordprocessingml.document");
-        String encodeName = URLEncoder.encode(fileName + ".docx", StandardCharsets.UTF_8);
+        String encodeName = URLEncoder.encode(docName, StandardCharsets.UTF_8);
         response.setHeader("Content-Disposition", "attachment;filename=" + encodeName);
         response.setHeader("Pragma", "no-cache");
         response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");

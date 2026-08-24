@@ -26,6 +26,8 @@ import utils.SHA256Util;
 @Service
 public class UserService {
 
+	private static final String UPDATE_PWD = "update";
+	
 	@Autowired
 	private UserRepository userRepository;
 	
@@ -77,14 +79,11 @@ public class UserService {
             return result;
         }
         User user = userOpt.get();
-        if(user.getUserPwd().length()!=64) {
-        	if (!user.getUserPwd().equals(rawPwd)) {
-        		result.put("code", 500);
-        		result.put("msg", "密码错误");
-        		return result;
-        	}
+        if(user.getUserPwd().length()!=64 && !user.getUserPwd().equals(rawPwd)) {
+    		result.put("code", 500);
+    		result.put("msg", "密码错误");
+    		return result;
         }else {
-        	
         	String encryptPwd = SHA256Util.sha256Encrypt(rawPwd, pwdSalt);
         	if (!user.getUserPwd().equals(encryptPwd)) {
         		result.put("code", 500);
@@ -99,7 +98,7 @@ public class UserService {
         return result;
     }
 	
-	public Map<String, Object> updatePwd(String userId, String oldPwd, String newPwd) {
+	public Map<String, Object> updatePwd(String userId, String type,String oldPwd, String newPwd) {
         Map<String, Object> res = new HashMap<>();
         // 1 查询用户
         Optional<User> userOpt = userRepository.findByUserId(userId);
@@ -109,12 +108,14 @@ public class UserService {
             return res;
         }
         User user = userOpt.get();
-        String encryptOldPwd = SHA256Util.sha256Encrypt(oldPwd, pwdSalt);
-        // 2 校验原密码（测试明文，上线必须BCrypt加密比对）
-        if (!user.getUserPwd().equals(encryptOldPwd)) {
-            res.put("code", 500);
-            res.put("msg", "原密码输入错误");
-            return res;
+        if(UPDATE_PWD.equals(type)) {
+        	String encryptOldPwd = SHA256Util.sha256Encrypt(oldPwd, pwdSalt);
+        	// 2 校验原密码（测试明文，上线必须BCrypt加密比对）
+        	if (!user.getUserPwd().equals(encryptOldPwd)) {
+        		res.put("code", 500);
+        		res.put("msg", "原密码输入错误");
+        		return res;
+        	}
         }
 
         // 3 更新新密码
