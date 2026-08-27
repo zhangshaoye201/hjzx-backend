@@ -19,7 +19,7 @@ public interface UserRepository extends JpaRepository<User, String>,JpaSpecifica
 	@Query("SELECT t FROM User t WHERE " +
 		       "( :#{#query.searchName} IS NULL OR t.userName = :#{#query.searchName} ) " +
 		       "AND " +
-		       "( :#{#query.role} = 1 OR ( :#{#query.role} = 0 AND t.userName = :#{#query.loginName} ) )")
+		       "( :#{#query.role} = 1 OR ( :#{#query.role} = 0 AND t.userName = :#{#query.loginName} ) ) order by createTime DESC")
 		Page<User> getUserList(@Param("query") UserDTO query, Pageable pageable);
 
 	

@@ -1,5 +1,5 @@
 server:
-  port: 8080 # 生产环境常用80端口  #9527
+  port: 9527 # 生产环境常用80端口  #9527
   servlet: 
     context-path: /
   #ssl:
@@ -15,7 +15,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/hjzxdb?useUnicode=true&allowPublicKeyRetrieval=true&useSSL=false&characterEncoding=utf8&serverTimezone=Asia/Shanghai
     username: root
-    password: root
+    password: NrxHuiTu@@
 #password: NrxHuiTu@@
 
 # JPA 配置

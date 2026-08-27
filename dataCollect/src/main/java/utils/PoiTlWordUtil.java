@@ -10,6 +10,9 @@ import org.springframework.core.io.ClassPathResource;
 
 import com.deepoove.poi.XWPFTemplate;
 import com.deepoove.poi.config.Configure;
+import com.deepoove.poi.data.PictureRenderData;
+import com.deepoove.poi.data.PictureType;
+import com.deepoove.poi.data.Pictures;
 import com.deepoove.poi.plugin.table.LoopRowTableRenderPolicy;
 
 import jakarta.servlet.http.HttpServletResponse;
@@ -47,6 +50,19 @@ public class PoiTlWordUtil {
              XWPFTemplate template = XWPFTemplate.compile(inputStream,config).render(data)) {
             template.write(response.getOutputStream());
         }
+    }
+    
+    
+    public static PictureRenderData parseBase64Picture(String base64Str, int width, int height) {
+        if(base64Str == null || !base64Str.startsWith("data:image")){
+            return null;
+        }
+        String pureBase64 = base64Str.substring(base64Str.indexOf(",") + 1);
+		PictureType picType = pureBase64.contains("/png") ? PictureType.PNG : PictureType.JPEG;
+		
+        return Pictures.ofBase64(pureBase64, picType)
+                .size(width, height)
+                .create();
     }
     
 }

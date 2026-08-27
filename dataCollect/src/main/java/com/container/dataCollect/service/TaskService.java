@@ -25,6 +25,8 @@ import com.deepoove.poi.data.Pictures;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import utils.PoiTlWordUtil;
+
 /**
  * 任务服务接口（JPA 版本）
  */
@@ -159,6 +161,16 @@ public class TaskService {
     		}
     		fillHardnessFixedRow(hardnessList, hardnessFixedRow);
     		dataMap.put("hardnessList", hardnessList);
+    		
+    		// ---------------------- 铭牌照片处理 ----------------------
+    		if(ObjectUtils.isNotEmpty(task.getMacro1())) {
+    			Object macro1Json = task.getMacro1();
+    			Map<String, Object> macro1Map = (Map<String, Object>) macro1Json;
+    			if(ObjectUtils.isNotEmpty(macro1Map.get("nameplatePhotoDesc"))) {
+    				String rawBase64 = macro1Map.get("nameplatePhotoDesc").toString();
+    				dataMap.put("nameplatePhotoDesc", PoiTlWordUtil.parseBase64Picture(rawBase64, 600, 200));
+    			}
+    		}
     	}catch (Exception e) {
     		e.printStackTrace();
 		}
