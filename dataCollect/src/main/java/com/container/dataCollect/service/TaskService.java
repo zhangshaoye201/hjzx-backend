@@ -21,6 +21,7 @@ import com.container.dataCollect.entity.Task;
 import com.container.dataCollect.entity.TaskQueryDTO;
 import com.container.dataCollect.entity.ThicknessRecord;
 import com.container.dataCollect.repository.TaskRepository;
+import com.deepoove.poi.data.PictureRenderData;
 import com.deepoove.poi.data.Pictures;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import utils.PoiTlWordUtil;
 
 /**
- * 任务服务接口（JPA 版本）
+ * 任务服务接口
  */
 @Service
 public class TaskService {
@@ -163,14 +164,16 @@ public class TaskService {
     		dataMap.put("hardnessList", hardnessList);
     		
     		// ---------------------- 铭牌照片处理 ----------------------
+    		PictureRenderData nameplatePhotoDesc = null;
     		if(ObjectUtils.isNotEmpty(task.getMacro1())) {
     			Object macro1Json = task.getMacro1();
     			Map<String, Object> macro1Map = (Map<String, Object>) macro1Json;
     			if(ObjectUtils.isNotEmpty(macro1Map.get("nameplatePhotoDesc"))) {
     				String rawBase64 = macro1Map.get("nameplatePhotoDesc").toString();
-    				dataMap.put("nameplatePhotoDesc", PoiTlWordUtil.parseBase64Picture(rawBase64, 600, 200));
+    				nameplatePhotoDesc = PoiTlWordUtil.parseBase64Picture(rawBase64, 600, 200);
     			}
     		}
+    		dataMap.put("nameplatePhotoDesc", nameplatePhotoDesc);
     	}catch (Exception e) {
     		e.printStackTrace();
 		}
@@ -207,7 +210,6 @@ public class TaskService {
                 result.put("msg", "该任务不存在");
                 return result;
             }
-            // JPA删除
             taskRepository.deleteById(taskId);
             result.put("code", 200);
             result.put("msg", "删除成功");

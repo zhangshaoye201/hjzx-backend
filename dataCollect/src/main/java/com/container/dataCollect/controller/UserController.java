@@ -23,7 +23,7 @@ import com.container.dataCollect.service.UserService;
 
 @RestController
 @RequestMapping("/api/user")
-@CrossOrigin // 允许跨域（开发环境）
+@CrossOrigin
 public class UserController {
 
     @Autowired

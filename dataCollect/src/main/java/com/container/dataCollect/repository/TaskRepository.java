@@ -41,7 +41,6 @@ public interface TaskRepository extends JpaRepository<Task, String>,JpaSpecifica
 	           + "AND (:#{#query.unitNo} IS NULL OR t.unitNo = :#{#query.unitNo}) "
 	           + "AND (:#{#query.status} IS NULL OR t.status = :#{#query.status}) "
 	           + "AND (:#{#query.claimBy} IS NULL OR t.claimBy = :#{#query.claimBy}) "
-	           + "AND (:#{#query.claimed} IS NULL OR t.claimed = :#{#query.claimed}) "
 	           + "AND (:#{#query.unitName} IS NULL OR t.unitName like %:#{#query.unitName}%)"
 			   + " ORDER BY t.createTime DESC")
 	    Page<Task> findByCondition(@Param("query") TaskQueryDTO query, Pageable pageable);
@@ -49,6 +48,6 @@ public interface TaskRepository extends JpaRepository<Task, String>,JpaSpecifica
 	Task findByTaskId(String id);
 	
 	@Modifying
-    @Query("UPDATE Task t SET t.claimBy = :claimBy,t.claimed=1 WHERE t.taskId IN :taskIds and t.claimed = 0")
+    @Query("UPDATE Task t SET t.claimBy = :claimBy,t.status=1 WHERE t.taskId IN :taskIds and t.status = 0")
     int updateClaimByBatch(@Param("taskIds") List<String> taskIds, @Param("claimBy") String claimBy);
 }

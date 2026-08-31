@@ -14,8 +14,6 @@ public class TaskQueryDTO {
     private Integer status;
 
     private String claimBy;
-
-    private Integer claimed;
     
     private String unitName;
     

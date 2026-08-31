@@ -28,7 +28,6 @@ import utils.PoiTlWordUtil;
 
 @RestController
 @RequestMapping("/api/task")
-//@CrossOrigin // 允许跨域
 @CrossOrigin(exposedHeaders = {"Content-Disposition"})
 public class TaskController {
 

@@ -21,7 +21,7 @@ import com.container.dataCollect.repository.UserRepository;
 import utils.SHA256Util;
 
 /**
- * 任务服务接口（JPA 版本）
+ * 任务服务接口
  */
 @Service
 public class UserService {

@@ -54,15 +54,12 @@ public class Task implements Serializable {
     /** 更新人 */
     @Column(name = "update_by")
     private String updateBy;
-    /** 提交状态 */
+    /** 状态 */
     @Column(name = "status")
     private Integer status;
     /** 来源 */
     @Column(name = "source")
     private Integer source;
-    /** 认领状态 */
-    @Column(name = "claimed")
-    private Integer claimed;
     /** 认领人 */
     @Column(name = "claim_by")
     private String claimBy;
