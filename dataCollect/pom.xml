@@ -61,7 +61,11 @@
 		    <version>1.18.34</version> <!-- 升级兼容JDK17的版本 -->
 		    <scope>provided</scope> <!-- 保持provided，仅编译期生效 -->
 		</dependency>
-		
+		<dependency>
+		    <groupId>org.springframework.security</groupId>
+		    <artifactId>spring-security-crypto</artifactId>
+		    <version>6.2.0</version>
+		</dependency>
 		<dependency>
 		    <groupId>com.deepoove</groupId>
 		    <artifactId>poi-tl</artifactId>

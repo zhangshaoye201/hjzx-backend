@@ -20,10 +20,17 @@ public interface UserRepository extends JpaRepository<User, String>,JpaSpecifica
 		       "( :#{#query.searchName} IS NULL OR t.userName = :#{#query.searchName} ) " +
 		       "AND " +
 		       "( :#{#query.role} = 1 OR ( :#{#query.role} = 0 AND t.userName = :#{#query.loginName} ) ) order by createTime DESC")
-		Page<User> getUserList(@Param("query") UserDTO query, Pageable pageable);
-
+	Page<User> getUserList(@Param("query") UserDTO query, Pageable pageable);
 	
 	Optional<User> findByUserName(String userName);
 	
 	Optional<User> findByUserId(String userId);
+	
+	Optional<User> findByVerifyCode(String verifyCode);
+	
+	@Query("SELECT t FROM User t WHERE t.userName != :#{#query.loginName}")
+	Page<User> getVerifyList(@Param("query") UserDTO query, Pageable pageable);
+	
+	Optional<User> findByUserNameAndVerifyCode(String userName, String verifyCode);
+
 }

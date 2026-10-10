@@ -36,20 +36,38 @@ public class UserController {
         return userService.loginVerify(username, password);
     }
     
+    @PostMapping("/verify")
+    public Map<String, Object> verify(@RequestBody Map<String, String> param) {
+    	String verifier = param.get("verifier");
+    	String rawVerifyCode = param.get("verifyCode");
+        return userService.formVerify(verifier,rawVerifyCode);
+    }
+    
     @PostMapping("/updatePwd")
     public Map<String, Object> updatePassword(@RequestBody Map<String, String> param) {
         String userId = param.get("userId");
         String type = param.get("type");
         String oldPassword = param.get("oldPassword");
         String newPassword = param.get("newPassword");
-        return userService.updatePwd(userId, type, oldPassword, newPassword);
+        String newVerifyCode = param.get("newVerifyCode");
+        String oldVerifyCode = param.get("oldVerifyCode");
+        return userService.updatePwd(userId, type, oldPassword, newPassword,oldVerifyCode,newVerifyCode);
     }
     
     @GetMapping("/list")
     public Page<User> getUserList(UserDTO query) {
         return userService.getUserList(query);
     }
+    
+    @GetMapping("/assignList")
+    public Page<User> getAssignList(UserDTO query) {
+        return userService.getAssignList(query);
+    }
 
+    @GetMapping("/verifyList")
+    public Page<User> getVerifyList(UserDTO query) {
+        return userService.getVerifyList(query);
+    }
     
     /**
      * 导入，新建

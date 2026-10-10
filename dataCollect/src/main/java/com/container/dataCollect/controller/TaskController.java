@@ -113,17 +113,17 @@ public class TaskController {
     }
     
     /**
-     * 根据taskId导出任务
+     * 根据taskId导出原始记录
      * @param taskId 任务ID
      * @return HttpServletResponse
      */
-    @GetMapping("/export")
-    public void exportSingleTask(@RequestParam String taskId, @RequestParam String docName, @RequestParam String tags,HttpServletResponse response) {
+    @GetMapping("/record")
+    public void exportRecord(@RequestParam String taskId, @RequestParam String docName, @RequestParam String tags,HttpServletResponse response) {
     try {
     	Task task = taskService.findTaskById(taskId);
         // 3. 调用 poi-tl 工具下载Word
         PoiTlWordUtil.downloadWord(
-        		taskService.initFileUrl(task.getCategory()),  // 模板路径
+        		taskService.initFileUrl("record",task.getCategory().equals("2DD31")?"pipe":"container"),  // 模板路径
                 taskService.initDataMap(task, tags),
                 docName,   // 下载文件名
                 response
@@ -138,6 +138,34 @@ public class TaskController {
         }
     }
 }
+    
+    /**
+     * 根据taskId导出报告
+     * @param taskId 任务ID
+     * @return HttpServletResponse
+     */
+    @GetMapping("/report")
+    public void exportReport(@RequestParam String taskId, @RequestParam String docName, HttpServletResponse response) {
+    try {
+    	Task task = taskService.findTaskById(taskId);
+        // 3. 调用 poi-tl 工具下载Word
+        PoiTlWordUtil.downloadWord(
+        		taskService.initFileUrl("report",task.getCategory().equals("2DD31")?"pipe":"container"),  // 模板路径
+                taskService.initDataMap(task,""),
+                docName,   // 下载文件名
+                response
+        );
+    } catch (Exception e) {
+        e.printStackTrace();
+        response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+        try {
+            response.getWriter().write("导出失败：" + e.getMessage());
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+}
+    
     /**
      * 删除任务接口
      */

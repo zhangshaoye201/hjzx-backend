@@ -46,7 +46,7 @@ public class User {
     /**
      * 更新时间
      */
-	@Column(name = "updateTime")
+	@Column(name = "update_time")
     private String updateTime;
 	
 	/**
@@ -54,4 +54,10 @@ public class User {
      */
 	@Column(name = "role")
     private int role;
+	
+	/**
+     * 校核码
+     */
+	@Column(name = "verify_code")
+    private String verifyCode;
 }
